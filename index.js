@@ -4,23 +4,26 @@ const PORT = 8080;
 
 app.use(express.json());
 
-app.get('/tshirt', (req, res) => {
+app.get('/profile', (req, res) => {
     res.status(200).send({
-        tshirt: 'red',
-        size: 'large'
+        firstname: 'Bob',
+        lastname: 'Kirley',
+	age: 25,
+	employed: true,
+	email: 'bobkirley@mail.co'
     })
 })
 
-app.post('/tshirt/:id', (req, res) => {
+app.post('/profile/:id', (req, res) => {
     const { id } = req.params;
-    const { logo } = req.body;
+    const { firstname, lastname, age, employed, email } = req.body;
 
-    if (!logo) {
-        res.status(418).send({ message: 'We need a logo!' })
+    if (!firstname || !lastname) {
+        res.status(418).send({ message: 'More info needed' })
     }
 
     res.send({
-        tshirt: `tshirt with your ${logo} is id ${id}`,
+        message: `New profile added with the id of ${id} and the name ${firstname} ${lastname}`,
     });
 })
 

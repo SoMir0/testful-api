@@ -2,11 +2,16 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 
+const nameModule = require('./data/names.js');
+const names = nameModule.names;
+
+const randomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
 app.use(express.json());
 
 app.get('/profile', (req, res) => {
     res.status(200).send({
-        firstname: 'Bob',
+        firstname: randomElement(names),
         lastname: 'Kirley',
 	age: 25,
 	employed: true,

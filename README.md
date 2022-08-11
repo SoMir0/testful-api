@@ -4,13 +4,13 @@ Re-purposed into an online clipboard app, Onboards.
 
 ### To run:
 
-```
+```bash
 git clone https://github.com/SoMir0/testful-api.git
 cd testful-api/frontend
 npm ci
 npm run dev
 
-> In another terminal
+# In another terminal
 
 cd testful-api
 npm ci

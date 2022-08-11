@@ -8,7 +8,12 @@
   let boards = [];
 
   let newBoardText = '';
+
+  let notifPos = '-4rem';
+	$: cssVarStyles = `--notif-pos:${notifPos}`;
   
+  let numOfNotifs = 0;
+
   // functions
 
   async function postBoard() {
@@ -32,6 +37,19 @@
     window.location = window.location;
   }
 
+  const copyText = (text) => {
+    navigator.clipboard.writeText(text);
+    if (notifPos == '1rem') {
+      numOfNotifs += 1;
+      return;
+    }
+    notifPos = '1rem';
+    setTimeout(function() {
+      notifPos = '-4rem';
+      numOfNotifs = 0;
+    }, 3000);
+  }
+
   // on mount
   onMount(async function () {
     try {
@@ -44,7 +62,7 @@
   });
 </script>
 
-<main>
+<main style="{cssVarStyles}">
   <h1 class="title">On<mark>line clip</mark>boards!</h1>
   <form class="new" on:submit={postBoard}>
     <label for="newBoard">Add new board...</label>
@@ -57,7 +75,7 @@
       <p>No boards to show...</p>
     {:else}
       {#each boards as board}
-        <article class="board">
+        <article class="board" on:click={() => { copyText(board.content)}}>
           {board.content}
           <dt></dt>
           <button class="btn deleteBtn" on:click={() => {deleteBoard(board.id)}}>⤬</button>
@@ -65,6 +83,11 @@
         </article>
       {/each}
     {/if}
+  </div>
+  <div class="notifications">
+    <div class="notif">
+      Copied! {#if numOfNotifs > 0}({numOfNotifs}){/if}
+    </div>
   </div>
 </main>
 
@@ -89,7 +112,7 @@
       "title"
       "new"
       "all";
-    grid-template-rows: 15vmax 30vmax 1fr;
+    grid-template-rows: 15vh 30vh 1fr;
     grid-template-columns: 1fr;
     text-align: center;
     padding: 0 1rem;
@@ -109,10 +132,11 @@
     height: 2rem;
     font-size: 1.3rem;
     border-radius: 1rem 0;
+    padding: 0.2rem;
   }
 
   #newBoard:focus {
-    outline: var(--front) 2px dashed;
+    box-shadow: var(--front) 0 0 0.5rem;
   }
 
   #subBtn {
@@ -167,10 +191,20 @@
   .all {
     grid-area: all;
   }
+
+  .notif {
+    position: fixed;
+    background: var(--highlight);
+    top: var(--notif-pos); right: 1rem;
+    text-align: right;
+    padding: 0.5rem; border-radius: 0.5rem;
+    font-weight: bold; font-size: 1rem;
+    transition: 250ms linear;
+  }
   
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-height: 300px) {
     main {
-      grid-template-rows: 30vmax 40vmax 1fr;
+      grid-template-rows: 25vh 60vh 1fr;
       grid-template-columns: 1fr;
     }
   }

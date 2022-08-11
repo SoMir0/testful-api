@@ -1,18 +1,22 @@
-# testful-api
+# ~~testful-api~~ Onboards
 
-A restful API for testing various front-end projects.
-
-> [NOT USABLE]
+Re-purposed into an online clipboard app, Onboards.
 
 ### To run:
 
 ```
 git clone https://github.com/SoMir0/testful-api.git
+cd testful-api/frontend
+npm ci
+npm run dev
+
+> In another terminal
+
 cd testful-api
-npm i
+npm ci
 npm run dev
 ```
 
 ### Info
 
-Still very early development, a small personal project for making other front-end projects, so that I can get random data and not worry about the back-end.
+An online clipboard app to exchange text between devices, not done.

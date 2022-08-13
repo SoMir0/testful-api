@@ -38,7 +38,9 @@
   }
 
   const copyText = (text) => {
-    navigator.clipboard.writeText(text);
+    if(window.isSecureContext && navigator.clipboard)
+      navigator.clipboard.writeText(text);
+    else unsecuredCopyToClipboard(text);
     if (notifPos == '1rem') {
       numOfNotifs += 1;
       return;
@@ -48,6 +50,20 @@
       notifPos = '-4rem';
       numOfNotifs = 0;
     }, 3000);
+  }
+
+  function unsecuredCopyToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+    } catch (err) {
+      console.error('Unable to copy to clipboard', err);
+    }
+    document.body.removeChild(textArea);
   }
 
   // on mount
@@ -106,6 +122,10 @@
     font-family: monospace, sans-serif;
   }
 
+  ::selection {
+    background: var(--highlight);
+  }
+
   main {
     display: grid;
     grid-template-areas:
@@ -120,6 +140,10 @@
 
   mark {
     background: none; color: var(--highlight);
+  }
+
+  mark::selection {
+    background: var(--front);
   }
 
   label {

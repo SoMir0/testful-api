@@ -37,6 +37,17 @@
     window.location = window.location;
   }
 
+  async function updateBoard(id) {
+    fetch(endpoint+id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: newBoardText })
+    }).catch(error => {
+      console.error('There was an error!', error);
+    });
+    window.location = window.location;
+  }
+
   const copyText = (text) => {
     if(window.isSecureContext && navigator.clipboard)
       navigator.clipboard.writeText(text);
@@ -95,7 +106,7 @@
           {board.content}
           <dt></dt>
           <button class="btn deleteBtn" on:click={() => {deleteBoard(board.id)}}>⤬</button>
-          <button class="btn updateBtn">✎</button>
+          <button class="btn updateBtn" on:click={() => {updateBoard(board.id)}}>✎</button>
         </article>
       {/each}
     {/if}
